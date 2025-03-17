@@ -1,13 +1,7 @@
 ```python
-from bookshelf.models import Book                                            }")
-if book:
-    print(f"Title: {book.title}")
-    print(f"Author: {book.author}")
-    print(f"Publication Year: {book.publication_year}")
-else:
-    print("No books found in the database.")
+from bookshelf.models import Book                                            
+book = Book.objects.get(id=1) 
+print(f"Title: {book.title}, Author: {book.author}, Published in: {book.publication_year}")
 
-#Expected output
-Title: 1984
-Author: George Orwell
-Publication Year: 1949
+#Expected Output
+Title: 1984, Author: George Orwell, Published in: 1949
