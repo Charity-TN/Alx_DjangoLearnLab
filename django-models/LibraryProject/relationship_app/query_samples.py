@@ -1,8 +1,9 @@
-from relationship_app.models import Book, Library, Librarian
+from relationship_app.models import Book, Library, Librarian, Author
 
 #Query all books by a specific author
 def get_books_by_author(author_name):
-    return Book.objects.filter(author_name== author_name)
+    author = Author.objects.get(name=author_name)
+    return Book.objects.filter(author=author)
 
 #List all books in a Library
 def get_books_in_library(library_name):
