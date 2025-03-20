@@ -50,3 +50,27 @@ def logout_view(request):
     return redirect('login')
 def register_view(request):
     return render(request, 'register.html')
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test
+
+def admin_required(user):
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
+
+def librarian_required(user):
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
+
+def member_required(user):
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
+    
+@user_passes_test(admin_required)
+def admin_view(request):
+    return render(request, 'adnim_view.html')    
+
+@user_passes_test(librarian_required)
+def librarian_view(request):
+    return render(request, 'librarian_view.html')
+
+@user_passes_test(member_required)
+def member_view(request):
+    return render(request, 'member_view.html')        
