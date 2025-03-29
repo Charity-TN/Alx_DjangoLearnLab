@@ -54,29 +54,39 @@ def register_view(request):
 
 
 from django.shortcuts import render
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test
+from .models import UserProfile
 
+def check_role(user,required_role):
+    try:
+        return user.userprofile.role == required_role
+    except UserProfile.DoesNotExist:
+        return False
+    
+def admin_check(user):
+    return check_role(user, 'Admin')
 
-def is_admin(user):
-    return user.is_authenticated and getattr(user, "userprofile", None) and user.userprofile.role == "Admin"
+def librarian_check(user):
+    return check_role(user, 'Librarian')
 
-@user_passes_test(lambda u: is_admin(u))
+def member_check(user):
+    return check_role(user, 'Member')
+
+@login_required
+@user_passes_test(admin_check)
 def admin_view(request):
-    return render(request,'relationship_app/admin_view.html')
+    return render(request, 'admin_view.html', {'user': request.user})
 
-def is_librarian(user):
-    return user.is_authenticated and getattr(user, "userprofile", None) and user.userprofile.role == "Librarian"
+@login_required
+@user_passes_test(librarian_check)
+def librarian_view(request):
+    return render(request, 'librarian_view.html', {'user': request.user})
 
-@user_passes_test(lambda u: is_librarian(u))
-def admin_view(request):
-    return render(request,'relationship_app/librarian_view.html')
+@login_required
+@user_passes_test(admin_check)
+def member_view(request):
+    return render(request, 'member_view.html', {'user': request.user})
 
-def is_member(user):
-    return user.is_authenticated and getattr(user, "userprofile", None) and user.userprofile.role == "Member"
-
-@user_passes_test(lambda u: is_member(u))
-def admin_view(request):
-    return render(request,'relationship_app/member_view.html')
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
