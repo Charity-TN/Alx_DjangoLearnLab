@@ -154,6 +154,9 @@ CSRF_COOKIE_SECURE = True  # Send CSRF cookies over HTTPS only
 X_FRAME_OPTIONS = "DENY"  # Protect against clickjacking by denying iframe embedding
 SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent browsers from content-type sniffing
 SECURE_BROWSER_XSS_FILTER = True  # Enable browser's XSS protection
+# Setting for reverse proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # Tell Django to trust the "X-Forwarded-Proto" header from your proxy
+
 
 # Additional deployment considerations
 # Make sure to set up your SSL/TLS certificates on your web server (e.g., Nginx or Apache)
