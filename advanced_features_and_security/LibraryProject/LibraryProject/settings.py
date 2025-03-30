@@ -139,3 +139,21 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = ["bookshelf.CustomUser"]
+
+# Enforce HTTPS
+SECURE_SSL_REDIRECT = True  # Redirect all HTTP requests to HTTPS
+SECURE_HSTS_SECONDS = 31536000  # Enable HSTS for one year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
+SECURE_HSTS_PRELOAD = True  # Allow preloading of HSTS policy
+
+# Secure cookies
+SESSION_COOKIE_SECURE = True  # Send session cookies over HTTPS only
+CSRF_COOKIE_SECURE = True  # Send CSRF cookies over HTTPS only
+
+# Secure headers
+X_FRAME_OPTIONS = "DENY"  # Protect against clickjacking by denying iframe embedding
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent browsers from content-type sniffing
+SECURE_BROWSER_XSS_FILTER = True  # Enable browser's XSS protection
+
+# Additional deployment considerations
+# Make sure to set up your SSL/TLS certificates on your web server (e.g., Nginx or Apache)
