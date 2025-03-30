@@ -1,0 +1,25 @@
+<!---book_form--->
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Book</title>
+</head>
+<body>
+    <h1>{% if form.instance.pk %} Edit {% else %} Add{% endif %} Book</h1>
+
+    <form method="post">
+        {% csrf_token %} 
+        
+        <table>
+            {{form.as_table}}
+        </table>
+        
+        <input type="submit" value="Save">
+        <a href="{% url 'book_list' %}">Cancel</a>
+    </form>
+</body>
+</html>
