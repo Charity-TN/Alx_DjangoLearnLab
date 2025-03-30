@@ -4,4 +4,4 @@ This is a Django Project for managing a library system.
 1. Custom permissions are defined in the `MyModel` class.
 2. Groups and permissions can be configured via the setup script in `admin.py`.
 3. Permissions are enforced in views using Django's `permission_required` decorator.
-4. Test cases are included in `tests.py` for automated validation.
+4. Tested the implementation of the permissions and groups manually.
