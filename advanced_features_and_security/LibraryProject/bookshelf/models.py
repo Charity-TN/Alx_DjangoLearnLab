@@ -38,3 +38,16 @@ CustomUser.objects = CustomUserManager()
     
 from django.conf import settings
 user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+from django.db import models
+
+class MyModel(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        permissions = [
+            ("can_view", "Can view the model"),
+            ("can_create", "Can create the model"),
+            ("can_edit", "Can edit the model"),
+            ("can_delete", "Can delete the model"),
+        ]
