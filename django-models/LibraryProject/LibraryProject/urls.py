@@ -21,8 +21,7 @@ from django.contrib.auth import views as auth_views
 from relationship_app.views import register
 from relationship_app import views
 from django.urls import include
-from relationship_app.views import admin_view, librarian_view, member_view
-from . import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,9 +32,5 @@ urlpatterns = [
     path('logout/',auth_views.LogoutView.as_view(template_name='relationship_app/logout.html'),name='logout'),
     path('register/',register,name='register'),
     path('relationship/', include('relationship_app.urls')),
-    path('admin_page/', admin_view, name='admin_view'),
-    path('librarian_page/', librarian_view, name='librarian_view'),
-    path('member_page/', member_view, name='member_view'),
-    path('add/', views.add_book, name='add_book'),
-    path('edit/<int:book_id>/', views.delete_book, name='delete_book'),
 ]
+    

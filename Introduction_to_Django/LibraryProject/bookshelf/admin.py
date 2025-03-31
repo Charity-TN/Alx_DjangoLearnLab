@@ -11,4 +11,4 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ('title', 'author')
 
 #Enable search by title and author
-    list_filter = ('publication_year')
+    list_filter = ('publication_year',)
