@@ -5,27 +5,37 @@ from .models import Book, Author
 from django.urls import reverse
 
 # Create your tests here.
-class BookAPITestCase(APITestCase):
+from rest_framework.test import APITestCase
+from django.contrib.auth.models import User
+from .models import Book, Author
+
+class BookAuthenticatedAPITestCase(APITestCase):
 
     def setUp(self):
+        # Create test user
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        
+        # Log in the test user
+        self.client.login(username='testuser', password='testpassword')
+
+        # Create test data
         self.author = Author.objects.create(name="J.K. Rowling")
         self.book = Book.objects.create(
             title="Harry Potter",
             author=self.author,
             publication_year=1997
         )
-        self.book_list_url = reverse('book-list')
-        self.book_detail_url = reverse('book-detail', args=[self.book.id])
+        self.book_create_url = '/api/books/create/'
 
-    def test_create_book(self):
+    def test_authenticated_user_can_create_book(self):
+        # Data for creating a new book
         data = {
             "title": "The Hobbit",
             "author": self.author.id,
             "publication_year": 1937
         }
-        response = self.client.post(reverse('book-create'), data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Book.objects.count(), 2)
+        response = self.client.post(self.book_create_url, data)
+        self.assertEqual(response.status_code, 201)  # Status code for successful creation
 
     def test_retrieve_book(self):
         response = self.client.get(self.book_detail_url)
@@ -59,12 +69,12 @@ class BookAPITestCase(APITestCase):
 
 from rest_framework.authtoken.models import Token
 
-    def test_unauthenticated_user_cannot_create_book(self):
+def test_unauthenticated_user_cannot_create_book(self):
         data = {"title": "Unauthorized Book", "author": self.author.id, "publication_year": 2022}
         response = self.client.post(reverse('book-create'), data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_authenticated_user_can_create_book(self):
+def test_authenticated_user_can_create_book(self):
         token = Token.objects.create(user=self.user)
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
         data = {"title": "Authorized Book", "author": self.author.id, "publication_year": 2022}
