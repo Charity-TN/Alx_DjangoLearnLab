@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
+    # Explicitly use serializers.CharField for password field
     password = serializers.CharField(write_only=True)
 
     class Meta:
@@ -12,7 +13,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         fields = ('username', 'password', 'email', 'bio', 'profile_picture')
 
     def create(self, validated_data):
-        user = User.objects.create_user(
+        # Use get_user_model().objects.create_user for user creation
+        user = get_user_model().objects.create_user(
             username=validated_data['username'],
             email=validated_data.get('email', ''),
             password=validated_data['password'],
